@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<head>
+    <title>Advanced Pig Latin Translator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #8d9094;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            background-image: url('https://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Pot-bellied_pigs_in_Lisbon_Zoo_2008.jpg/800px-Pot-bellied_pigs_in_Lisbon_Zoo_2008.jpg?20130128061457');
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 700px;
+            width: 100%;
+            text-align: center;
+        }
+        h1 {
+            color: #007acc;
+            text-align: center;
+        }
+        label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        button {
+            width: 75%;
+            padding: 14px;
+            background-color: #007acc;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 10px;
+        }
+        button:hover {
+            background-color: #005f99;
+        }
+        p {
+            text-align: center;
+            font-size: 18px;
+        }
+        #pigLatinTranslation {
+            font-weight: bold;
+            color: #ffffff;
+            font-family: 'Times New Roman', Times, sans-serif;
+            font-size: 24px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container" id="container">
+        <p style="font-family: 'Times New Roman', cursive; font-size: 36px; color: #ffffff;">Translate to Pig Latin</p>
+        <label for="englishText" style="font-family: 'Arial', sans-serif; font-size: 20px; color: #cc0000; -webkit-text-fill-color: #fff;">Enter the English text:</label>
+        <input type="text" id="englishText" />
+        <button onclick="translateSentenceToPigLatin()">Translate</button>
+        <p style="font-family: 'Brush Script MT'; font-size: 36px; color: #dbdedf;">Pig Latin translation: <span id="pigLatinTranslation"></span></p>
+    </div>
+
+    <script>
+        function isVowel(char) {
+            return "aeiou".includes(char);
+        }
+
+        function isSpecialVowel(char, index, word) {
+            if (char === 'y' && index > 0 && !isVowel(word[index - 1])) return true;
+            if (char === 'w' && index > 0 && !isVowel(word[index - 1])) return true;
+            return false;
+        }
+
+        function translateWordToPigLatin(word) {
+            word = word.toLowerCase();
+            if (isVowel(word[0]) || isSpecialVowel(word[0], 0, word)) {
+                return word + "way";
+            } else if (word.startsWith("qu")) {
+                return word.slice(2) + "quay";
+            } else {
+                let consonantCluster = "";
+                let i = 0;
+
+                while (i < word.length && !isVowel(word[i]) && !isSpecialVowel(word[i], i, word)) {
+                    consonantCluster += word[i];
+                    i++;
+                }
+
+                return word.slice(i) + consonantCluster + "ay";
+            }
+        }
+
+        function translateSentenceToPigLatin() {
+            const englishText = document.getElementById('englishText').value;
+            const words = englishText.split(' ');
+            const pigLatinWords = words.map(word => translateWordToPigLatin(word));
+            document.getElementById('pigLatinTranslation').innerText = pigLatinWords.join(' ');
+
+            document.getElementById('container').style.backgroundImage = "url('https://i.postimg.cc/FsVMXzXG/Learned-Pig.jpg)";
+        }
+    </script>
+</body>
+</html>
